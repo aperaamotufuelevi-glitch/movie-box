@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>Aperaamo Tufue Levi's Movie Box</title>
+<style>
+:root{
+  --bg:#0e1116; --panel:#171b22; --panel2:#1f242d; --line:#2a303b;
+  --text:#e9ecf1; --muted:#9aa3b2; --accent:#e8b04b; --accent2:#4fb3a9;
+  --danger:#e06c6c; --radius:12px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font-size:16px;line-height:1.45}
+a{color:var(--accent)}
+button,select,input,textarea{font:inherit;color:inherit}
+header{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.96);border-bottom:1px solid var(--line);backdrop-filter:blur(6px)}
+.top{display:flex;align-items:center;gap:10px;padding:12px 16px;max-width:1100px;margin:0 auto}
+.logo{font-weight:800;font-size:1.25rem;letter-spacing:.3px}
+.logo span{color:var(--accent)}
+nav{display:flex;gap:6px;overflow-x:auto;padding:0 16px 10px;max-width:1100px;margin:0 auto;scrollbar-width:none}
+nav::-webkit-scrollbar{display:none}
+.tab{flex:0 0 auto;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:8px 14px;cursor:pointer;white-space:nowrap}
+.tab.active{background:var(--accent);color:#1a1300;border-color:var(--accent);font-weight:700}
+main{max-width:1100px;margin:0 auto;padding:16px}
+section{display:none}
+section.active{display:block}
+h2{margin:6px 0 4px;font-size:1.3rem}
+.sub{color:var(--muted);margin:0 0 14px;font-size:.95rem}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.input,.select,textarea{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px;min-height:44px}
+.input{flex:1 1 220px}
+textarea{width:100%;min-height:80px;resize:vertical}
+.btn{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:10px 14px;min-height:44px;cursor:pointer}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#1a1300;font-weight:700}
+.btn.teal{background:var(--accent2);border-color:var(--accent2);color:#04201d;font-weight:700}
+.btn.danger{background:transparent;border-color:var(--danger);color:var(--danger)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:14px;margin-top:14px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;cursor:pointer;display:flex;flex-direction:column}
+.card img{width:100%;aspect-ratio:2/3;object-fit:cover;background:var(--panel2);display:block}
+.noposter{width:100%;aspect-ratio:2/3;background:linear-gradient(160deg,#2a2f3a,#141820);display:flex;align-items:center;justify-content:center;text-align:center;padding:10px;font-weight:700;color:var(--muted)}
+.card .meta{padding:8px 10px}
+.card .t{font-weight:700;font-size:.92rem;line-height:1.25}
+.card .y{color:var(--muted);font-size:.82rem}
+.classic{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:14px;display:flex;flex-direction:column;gap:8px}
+.classic .t{font-weight:800;font-size:1.05rem}
+.badge{display:inline-block;font-size:.75rem;padding:3px 8px;border-radius:999px;background:var(--panel2);border:1px solid var(--line);color:var(--muted)}
+.badge.pd{color:var(--accent2);border-color:var(--accent2)}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-top:14px}
+.notice{background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:10px;padding:12px 14px;margin:12px 0;font-size:.93rem}
+.notice.warn{border-left-color:var(--danger)}
+.empty{color:var(--muted);text-align:center;padding:30px 10px}
+.loading{color:var(--muted);padding:20px 0}
+/* modal */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:50;display:none;align-items:flex-start;justify-content:center;overflow-y:auto;padding:16px}
+.modal.open{display:flex}
+.sheet{background:var(--panel);border:1px solid var(--line);border-radius:16px;width:100%;max-width:820px;margin:auto 0;overflow:hidden}
+.sheet-head{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-bottom:1px solid var(--line);gap:10px}
+.sheet-head h3{margin:0;font-size:1.1rem}
+.x{background:none;border:none;font-size:1.6rem;line-height:1;cursor:pointer;color:var(--muted);min-width:44px;min-height:44px}
+.sheet-body{padding:14px}
+.detail{display:grid;grid-template-columns:140px 1fr;gap:14px}
+.detail img{width:100%;border-radius:10px}
+@media(max-width:520px){.detail{grid-template-columns:1fr}.detail img{max-width:180px}}
+.player{position:relative;width:100%;aspect-ratio:16/9;background:#000;border-radius:10px;overflow:hidden;margin:10px 0}
+.player iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.providers{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.prov{display:flex;align-items:center;gap:6px;background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:5px 8px;font-size:.85rem;text-decoration:none;color:var(--text)}
+.prov img{width:26px;height:26px;border-radius:6px}
+.lbl{color:var(--muted);font-size:.85rem;margin-top:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px}
+.list-item{display:grid;grid-template-columns:70px 1fr;gap:12px;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:10px;margin-top:10px}
+.list-item img,.list-item .noposter{width:70px;aspect-ratio:2/3;border-radius:6px;font-size:.6rem}
+.field{display:flex;flex-direction:column;gap:4px;margin-bottom:12px}
+.field label{font-size:.88rem;color:var(--muted);font-weight:600}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:14px;margin-bottom:14px}
+.panel h3{margin:0 0 10px;font-size:1.05rem}
+footer{max-width:1100px;margin:20px auto 0;padding:16px;border-top:1px solid var(--line);color:var(--muted);font-size:.82rem}
+footer .tmdb{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--accent2);color:#04201d;font-weight:700;padding:10px 16px;border-radius:999px;z-index:60;display:none}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="top"><div class="logo" id="logo">Aperaamo Tufue Levi's <span>Movie Box</span></div></div>
+  <nav id="tabs">
+    <button class="tab active" data-tab="discover">Discover</button>
+    <button class="tab" data-tab="classics">Free Classics</button>
+    <button class="tab" data-tab="mylist">My List</button>
+    <button class="tab" data-tab="settings" id="settingsTab" hidden>Settings</button>
+    <button class="tab" data-tab="about">About &amp; Legal</button>
+  </nav>
+</header>
+
+<main>
+  <!-- DISCOVER -->
+  <section id="discover" class="active">
+    <h2>Discover</h2>
+    <p class="sub">Search any movie for details, the official trailer, and where to watch it legally.</p>
+    <div id="nokey" class="notice" style="display:none"></div>
+    <form id="searchForm" class="row">
+      <input id="q" class="input" type="search" placeholder="Search a movie title…" autocomplete="off">
+      <select id="listType" class="select" aria-label="Show">
+        <option value="trending">Trending this week</option>
+        <option value="popular">Popular</option>
+        <option value="top_rated">Top rated</option>
+        <option value="now_playing">In theaters now</option>
+        <option value="upcoming">Coming soon</option>
+      </select>
+      <button class="btn primary" type="submit">Search</button>
+    </form>
+    <div id="discoverTitle" class="lbl"></div>
+    <div id="results" class="grid"></div>
+  </section>
+
+  <!-- CLASSICS -->
+  <section id="classics">
+    <h2>Free Classics</h2>
+    <p class="sub">Full movies you can watch right here. Each one is in the public domain in the United States and plays from the Internet Archive's own player.</p>
+    <div class="row">
+      <select id="classicGenre" class="select" aria-label="Genre">
+        <option value="">All genres</option>
+        <option>Horror</option>
+        <option>Film Noir</option>
+        <option>Comedy</option>
+      </select>
+    </div>
+    <div id="classicGrid" class="cgrid"></div>
+  </section>
+
+  <!-- MY LIST -->
+  <section id="mylist">
+    <h2>My List</h2>
+    <p class="sub">Saved on this device only.</p>
+    <div class="row">
+      <select id="listFilter" class="select" aria-label="Filter">
+        <option value="">All</option>
+        <option value="want">Want to watch</option>
+        <option value="watching">Watching</option>
+        <option value="watched">Watched</option>
+      </select>
+      <select id="listSort" class="select" aria-label="Sort">
+        <option value="added">Newest added</option>
+        <option value="title">Title A–Z</option>
+        <option value="rating">My rating</option>
+      </select>
+    </div>
+    <div id="listWrap"></div>
+    <div class="panel" style="margin-top:18px">
+      <h3>Backup</h3>
+      <p class="sub">Download your list as a file, or restore it on another device.</p>
+      <div class="row">
+        <button id="exportBtn" class="btn">Download backup</button>
+        <label class="btn" for="importFile">Restore backup</label>
+        <input id="importFile" type="file" accept="application/json,.json" hidden>
+        <button id="clearList" class="btn danger">Clear my list</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- SETTINGS -->
+  <section id="settings">
+    <h2>Settings</h2>
+    <div class="panel">
+      <h3>TMDB key</h3>
+      <div class="field">
+        <label for="tmdbKey">TMDB API key or Read Access Token</label>
+        <input id="tmdbKey" class="input" type="password" autocomplete="off" placeholder="Paste your key here">
+      </div>
+      <div class="row">
+        <button id="saveKey" class="btn primary">Save</button>
+        <button id="testKey" class="btn">Test key</button>
+        <button id="showKey" class="btn">Show</button>
+      </div>
+      <p class="sub" style="margin-top:10px">Free at themoviedb.org → Settings → API. The key is stored only in this browser, not in the page's code on GitHub.</p>
+    </div>
+    <div class="panel">
+      <h3>Preferences</h3>
+      <div class="field">
+        <label for="region">Where-to-watch country</label>
+        <select id="region" class="select">
+          <option value="US">United States</option>
+          <option value="CA">Canada</option>
+          <option value="GB">United Kingdom</option>
+          <option value="AU">Australia</option>
+          <option value="NZ">New Zealand</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="adult">Hide adult titles</label>
+        <select id="adult" class="select">
+          <option value="false">Yes, hide them</option>
+          <option value="true">No, show everything</option>
+        </select>
+      </div>
+      <button id="savePrefs" class="btn primary">Save preferences</button>
+    </div>
+    <div class="panel">
+      <h3>Movie search for friends &amp; family (Cloudflare)</h3>
+      <p class="sub" id="workerStatus"></p>
+      <p class="sub">Your Cloudflare Worker keeps your TMDB token on Cloudflare, so visitors can search movies without seeing it. Copy this code into the Worker:</p>
+      <textarea id="workerCode" readonly style="min-height:180px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.78rem"></textarea>
+      <div class="row" style="margin-top:8px"><button id="copyWorker" class="btn">Copy Worker code</button></div>
+    </div>
+    <div class="panel">
+      <h3>Owner access</h3>
+      <p class="sub">Settings is hidden from everyone who opens your link. To bring it back on a device, tap the site name 5 times and enter your PIN.</p>
+      <div class="row">
+        <button id="lockOwner" class="btn primary">Hide Settings on this device</button>
+        <button id="changePin" class="btn">Change PIN</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <h2>About &amp; Legal</h2>
+    <div class="notice">This site does not host, upload or store any movies.</div>
+    <div class="panel">
+      <h3>Free Classics</h3>
+      <p>Each film in Free Classics is in the public domain in the United States, either because its copyright was never renewed or because it was released without a valid copyright notice. They play through the Internet Archive's official embed player. Public-domain status can differ outside the U.S.</p>
+    </div>
+    <div class="panel">
+      <h3>Trailers and movie info</h3>
+      <p>Movie details and posters come from TMDB. Trailers play through YouTube's official embedded player and only use videos TMDB lists for that movie.</p>
+    </div>
+    <div class="panel">
+      <h3>Where to watch</h3>
+      <p>"Where to watch" shows only licensed services, such as Netflix, Kanopy, hoopla and Tubi. Some need a subscription or a library card. This site never links to unlicensed streaming sites.</p>
+    </div>
+    <div class="panel">
+      <h3>Privacy</h3>
+      <p>No ads, pop-ups, trackers or accounts. Your list and settings stay in this browser.</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="tmdb">
+    <img alt="TMDB" height="14" src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_short-8e7b30f73a4020692ccca9c88bafe5dcb6f8a62a4c6bc55cd9ba82bb2cd95f6c.svg">
+    <span>This product uses the TMDB API but is not endorsed or certified by TMDB.</span>
+  </div>
+  <div>Where-to-watch data provided by JustWatch. Free Classics play from the Internet Archive (archive.org).</div>
+</footer>
+
+<div id="modal" class="modal" role="dialog" aria-modal="true">
+  <div class="sheet">
+    <div class="sheet-head"><h3 id="mTitle"></h3><button class="x" id="mClose" aria-label="Close">×</button></div>
+    <div class="sheet-body" id="mBody"></div>
+  </div>
+</div>
+<div id="toast" class="toast"></div>
+
+<script>
+(function(){
+"use strict";
+
+/* ---------- Cloudflare Worker address (filled in after setup) ---------- */
+const WORKER_URL = "";
+
+/* ---------- Verified public-domain films (U.S.) ---------- */
+const CLASSICS = [
+  {id:"Night.Of.The.Living.Dead_1080p", title:"Night of the Living Dead", year:1968, runtime:"1h 35m", genre:"Horror",
+   plot:"A group of strangers barricade themselves in a farmhouse as the dead return to life.",
+   why:"Released without a valid copyright notice."},
+  {id:"his-girl-friday-1940-uhd-2-960x-2160-pixels-7-78-mbps", title:"His Girl Friday", year:1940, runtime:"1h 32m", genre:"Comedy",
+   plot:"A newspaper editor schemes to keep his star reporter, who is also his ex-wife, from remarrying.",
+   why:"Copyright was not renewed."},
+  {id:"Detour", title:"Detour", year:1945, runtime:"1h 7m", genre:"Film Noir",
+   plot:"A hitchhiking pianist is pulled into a chain of deadly bad luck.",
+   why:"Copyright was not renewed."},
+  {id:"doa_1949", title:"D.O.A.", year:1950, runtime:"1h 23m", genre:"Film Noir",
+   plot:"A man learns he has been poisoned and has days to find out who killed him.",
+   why:"Error in renewing the copyright."},
+  {id:"HouseOnHauntedHill1959", title:"House on Haunted Hill", year:1959, runtime:"1h 15m", genre:"Horror",
+   plot:"A millionaire offers guests money to spend the night in a haunted house.",
+   why:"Copyright was not renewed."},
+  {id:"the-little-shop-of-horrors", title:"The Little Shop of Horrors", year:1960, runtime:"1h 12m", genre:"Comedy",
+   plot:"A flower-shop clerk raises a plant with an appetite for people.",
+   why:"Released without a copyright notice."},
+  {id:"CarnivalOfSouls1962", title:"Carnival of Souls", year:1962, runtime:"1h 22m", genre:"Horror",
+   plot:"After surviving a crash, a church organist is drawn to an abandoned carnival.",
+   why:"Released without a valid copyright notice."}
+];
+
+/* ---------- Storage (safe) ---------- */
+const store = {
+  get(k, d){ try{ const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); }catch(e){ return d; } },
+  set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); return true; }catch(e){ return false; } }
+};
+let settings = store.get("mm_settings", {key:"", region:"US", adult:"false"});
+let myList = store.get("mm_list", []);
+
+/* ---------- Helpers ---------- */
+const $ = s => document.querySelector(s);
+const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const IMG = "https://image.tmdb.org/t/p/";
+function toast(msg){ const t=$("#toast"); t.textContent=msg; t.style.display="block"; clearTimeout(toast._t); toast._t=setTimeout(()=>t.style.display="none",2200); }
+
+/* ---------- Tabs ---------- */
+function showTab(name){
+  document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active", b.dataset.tab===name));
+  document.querySelectorAll("main section").forEach(s=>s.classList.toggle("active", s.id===name));
+  if(name==="mylist") renderList();
+  window.scrollTo(0,0);
+}
+document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>showTab(b.dataset.tab)));
+document.addEventListener("click", e=>{ const g=e.target.closest("[data-goto]"); if(g){ e.preventDefault(); showTab(g.dataset.goto); } });
+
+/* ---------- TMDB ---------- */
+const workerBase = () => WORKER_URL.replace(/\/+$/,"");
+const searchReady = () => !!(WORKER_URL || (settings.key||"").trim());
+async function tmdb(path, params, useKey){
+  const key = (useKey !== undefined ? useKey : settings.key||"").trim();
+  const viaWorker = WORKER_URL && useKey === undefined;
+  if(!viaWorker && !key) throw new Error("NOKEY");
+  const url = new URL(viaWorker ? workerBase()+"/"+path : "https://api.themoviedb.org/3/"+path);
+  Object.entries(params||{}).forEach(([k,v])=>url.searchParams.set(k,v));
+  const opts = {headers:{accept:"application/json"}};
+  if(!viaWorker){
+    if(key.length > 40){ opts.headers.Authorization = "Bearer "+key; }
+    else { url.searchParams.set("api_key", key); }
+  }
+  const r = await fetch(url, opts);
+  if(r.status===401) throw new Error("BADKEY");
+  if(!r.ok) throw new Error("HTTP "+r.status);
+  return r.json();
+}
+function errMsg(e){
+  if(!isOwner() && (e.message==="NOKEY"||e.message==="BADKEY")) return "Movie search isn't available right now. Free Classics still works.";
+  if(e.message==="NOKEY") return "Add your TMDB key in Settings to use this.";
+  if(e.message==="BADKEY") return "Your TMDB key wasn't accepted. Check it in Settings.";
+  return "Couldn't load movie info. Check your internet connection and try again.";
+}
+
+/* ---------- Discover ---------- */
+const LIST_LABELS = {trending:"Trending this week", popular:"Popular", top_rated:"Top rated", now_playing:"In theaters now", upcoming:"Coming soon"};
+async function loadDiscover(){
+  const q = $("#q").value.trim();
+  const box = $("#results");
+  const nk = $("#nokey");
+  if(!searchReady()){
+    nk.innerHTML = isOwner()
+      ? 'To search movies, add your TMDB key in <a href="#" data-goto="settings">Settings</a>. <a href="#" data-goto="classics">Free Classics</a> works without it.'
+      : 'Movie search isn\'t available yet. You can watch full movies in <a href="#" data-goto="classics">Free Classics</a>.';
+    nk.style.display="block"; box.innerHTML=""; $("#discoverTitle").textContent=""; return;
+  }
+  nk.style.display="none";
+  box.innerHTML = '<div class="loading">Loading…</div>';
+  try{
+    let data;
+    if(q){
+      data = await tmdb("search/movie", {query:q, include_adult:settings.adult, language:"en-US"});
+      $("#discoverTitle").textContent = 'Results for "'+q+'"';
+    }else{
+      const t = $("#listType").value;
+      data = t==="trending" ? await tmdb("trending/movie/week", {language:"en-US"})
+                            : await tmdb("movie/"+t, {language:"en-US", region:settings.region});
+      $("#discoverTitle").textContent = LIST_LABELS[t];
+    }
+    let items = (data.results||[]);
+    if(settings.adult!=="true") items = items.filter(m=>!m.adult);
+    if(!items.length){ box.innerHTML='<div class="empty">No movies found.</div>'; return; }
+    box.innerHTML = items.map(m=>`
+      <div class="card" data-id="${m.id}">
+        ${m.poster_path ? `<img loading="lazy" alt="" src="${IMG}w342${esc(m.poster_path)}">` : `<div class="noposter">${esc(m.title)}</div>`}
+        <div class="meta"><div class="t">${esc(m.title)}</div><div class="y">${esc((m.release_date||"").slice(0,4))}</div></div>
+      </div>`).join("");
+  }catch(e){ box.innerHTML = `<div class="notice warn">${esc(errMsg(e))}</div>`; }
+}
+$("#searchForm").addEventListener("submit", e=>{ e.preventDefault(); loadDiscover(); });
+$("#listType").addEventListener("change", ()=>{ $("#q").value=""; loadDiscover(); });
+$("#results").addEventListener("click", e=>{ const c=e.target.closest(".card"); if(c) openMovie(c.dataset.id); });
+
+/* ---------- Movie detail ---------- */
+function openModal(title, html){ $("#mTitle").textContent=title; $("#mBody").innerHTML=html; $("#modal").classList.add("open"); document.body.style.overflow="hidden"; }
+function closeModal(){ $("#modal").classList.remove("open"); $("#mBody").innerHTML=""; document.body.style.overflow=""; }
+$("#mClose").addEventListener("click", closeModal);
+$("#modal").addEventListener("click", e=>{ if(e.target.id==="modal") closeModal(); });
+document.addEventListener("keydown", e=>{ if(e.key==="Escape") closeModal(); });
+
+function pickTrailer(videos){
+  const yt = (videos||[]).filter(v=>v.site==="YouTube" && (v.type==="Trailer"||v.type==="Teaser") && /^[A-Za-z0-9_-]{6,20}$/.test(v.key||""));
+  const rank = v => (v.official?0:2) + (v.type==="Trailer"?0:1);
+  yt.sort((a,b)=>rank(a)-rank(b));
+  return yt[0] || null;
+}
+function provBlock(label, arr, link){
+  if(!arr || !arr.length) return "";
+  return `<div class="lbl">${label}</div><div class="providers">${arr.map(p=>`
+    <a class="prov" href="${esc(link)}" target="_blank" rel="noopener noreferrer">
+      ${p.logo_path?`<img alt="" src="${IMG}w92${esc(p.logo_path)}">`:""}${esc(p.provider_name)}</a>`).join("")}</div>`;
+}
+async function openMovie(id){
+  openModal("Loading…", '<div class="loading">Loading…</div>');
+  try{
+    const m = await tmdb("movie/"+encodeURIComponent(id), {language:"en-US", append_to_response:"videos,credits,watch/providers"});
+    const year = (m.release_date||"").slice(0,4);
+    const rt = m.runtime ? `${Math.floor(m.runtime/60)}h ${m.runtime%60}m` : "";
+    const genres = (m.genres||[]).map(g=>g.name).join(", ");
+    const cast = ((m.credits&&m.credits.cast)||[]).slice(0,6).map(c=>c.name).join(", ");
+    const dir = ((m.credits&&m.credits.crew)||[]).filter(c=>c.job==="Director").map(c=>c.name).join(", ");
+    const tr = pickTrailer(m.videos && m.videos.results);
+    const wp = (m["watch/providers"]&&m["watch/providers"].results&&m["watch/providers"].results[settings.region])||null;
+    const inList = myList.some(x=>x.key==="tmdb:"+m.id);
+    let where = "";
+    if(wp){
+      where = provBlock("Free", wp.free, wp.link) + provBlock("Free with ads", wp.ads, wp.link)
+            + provBlock("Subscription", wp.flatrate, wp.link) + provBlock("Rent", wp.rent, wp.link) + provBlock("Buy", wp.buy, wp.link);
+    }
+    if(!where) where = `<p class="sub">No legal streaming options listed for this country right now.</p>`;
+    $("#mTitle").textContent = m.title + (year?` (${year})`:"");
+    $("#mBody").innerHTML = `
+      <div class="detail">
+        ${m.poster_path?`<img alt="" src="${IMG}w342${esc(m.poster_path)}">`:`<div class="noposter">${esc(m.title)}</div>`}
+        <div>
+          <div class="row" style="gap:6px;margin-bottom:6px">
+            ${rt?`<span class="badge">${esc(rt)}</span>`:""}
+            ${m.vote_average?`<span class="badge">★ ${esc(m.vote_average.toFixed(1))}/10</span>`:""}
+            ${genres?`<span class="badge">${esc(genres)}</span>`:""}
+          </div>
+          <p>${esc(m.overview||"No description available.")}</p>
+          ${dir?`<div class="sub"><b>Director:</b> ${esc(dir)}</div>`:""}
+          ${cast?`<div class="sub"><b>Cast:</b> ${esc(cast)}</div>`:""}
+          <div class="row">
+            ${tr?`<button class="btn primary" id="playTrailer">▶ Watch trailer</button>`:`<span class="sub">No official trailer listed.</span>`}
+            <button class="btn" id="addTmdb">${inList?"✓ In My List":"+ My List"}</button>
+          </div>
+        </div>
+      </div>
+      <div id="trailerBox"></div>
+      <div class="lbl">Where to watch (${esc(settings.region)})</div>
+      ${where}
+      <p class="sub" style="margin-top:12px">Tapping a service opens the TMDB page with the official links. Data from JustWatch.</p>`;
+    if(tr) $("#playTrailer").addEventListener("click", ()=>{
+      $("#trailerBox").innerHTML = `<div class="player"><iframe src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(tr.key)}?rel=0" title="Trailer" allow="encrypted-media; fullscreen; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>`;
+    });
+    $("#addTmdb").addEventListener("click", function(){
+      addToList({key:"tmdb:"+m.id, title:m.title, year, poster:m.poster_path?IMG+"w185"+m.poster_path:"", source:"tmdb", tmdbId:m.id});
+      this.textContent="✓ In My List";
+    });
+  }catch(e){ $("#mTitle").textContent="Error"; $("#mBody").innerHTML=`<div class="notice warn">${esc(errMsg(e))}</div>`; }
+}
+
+/* ---------- Classics ---------- */
+function renderClassics(){
+  const g = $("#classicGenre").value;
+  const items = CLASSICS.filter(c=>!g || c.genre===g);
+  $("#classicGrid").innerHTML = items.map(c=>`
+    <div class="classic">
+      <div class="t">${esc(c.title)} <span class="sub">(${c.year})</span></div>
+      <div class="row" style="gap:6px"><span class="badge pd">Public domain</span><span class="badge">${esc(c.genre)}</span><span class="badge">${esc(c.runtime)}</span></div>
+      <div>${esc(c.plot)}</div>
+      <div class="row"><button class="btn teal" data-watch="${esc(c.id)}">▶ Watch full movie</button><button class="btn" data-addc="${esc(c.id)}">+ My List</button></div>
+    </div>`).join("");
+}
+function openClassic(id){
+  const c = CLASSICS.find(x=>x.id===id); if(!c) return;
+  openModal(`${c.title} (${c.year})`, `
+    <div class="player"><iframe src="https://archive.org/embed/${encodeURIComponent(c.id)}" title="${esc(c.title)}" allow="fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
+    <p>${esc(c.plot)}</p>
+    <p class="sub"><b>Why it's free:</b> ${esc(c.why)} Public domain in the United States.</p>
+    <p class="sub">Playing from the Internet Archive. <a href="https://archive.org/details/${encodeURIComponent(c.id)}" target="_blank" rel="noopener noreferrer">Source page</a></p>`);
+}
+$("#classicGenre").addEventListener("change", renderClassics);
+$("#classicGrid").addEventListener("click", e=>{
+  const w=e.target.closest("[data-watch]"); if(w) return openClassic(w.dataset.watch);
+  const a=e.target.closest("[data-addc]");
+  if(a){ const c=CLASSICS.find(x=>x.id===a.dataset.addc); addToList({key:"pd:"+c.id, title:c.title, year:String(c.year), poster:"", source:"classic", classicId:c.id}); a.textContent="✓ In My List"; }
+});
+
+/* ---------- My List ---------- */
+function saveList(){ if(!store.set("mm_list", myList)) toast("Couldn't save on this device"); }
+function addToList(item){
+  if(myList.some(x=>x.key===item.key)){ toast("Already in My List"); return; }
+  myList.unshift(Object.assign({status:"want", rating:"", notes:"", added:Date.now()}, item));
+  saveList(); toast("Added to My List");
+}
+const STATUS = {want:"Want to watch", watching:"Watching", watched:"Watched"};
+function renderList(){
+  const f=$("#listFilter").value, s=$("#listSort").value;
+  let items = myList.filter(x=>!f || x.status===f);
+  if(s==="title") items.sort((a,b)=>a.title.localeCompare(b.title));
+  else if(s==="rating") items.sort((a,b)=>(+b.rating||0)-(+a.rating||0));
+  else items.sort((a,b)=>b.added-a.added);
+  if(!items.length){ $("#listWrap").innerHTML='<div class="empty">Nothing here yet. Add movies from Discover or Free Classics.</div>'; return; }
+  $("#listWrap").innerHTML = items.map(x=>`
+    <div class="list-item" data-key="${esc(x.key)}">
+      ${x.poster?`<img alt="" src="${esc(x.poster)}">`:`<div class="noposter">${esc(x.title)}</div>`}
+      <div>
+        <div style="font-weight:700">${esc(x.title)} <span class="sub">${esc(x.year||"")}</span> ${x.source==="classic"?'<span class="badge pd">Free</span>':""}</div>
+        <div class="row" style="margin:8px 0">
+          <select class="select" data-f="status" aria-label="Status">
+            ${Object.entries(STATUS).map(([v,l])=>`<option value="${v}" ${x.status===v?"selected":""}>${l}</option>`).join("")}
+          </select>
+          <select class="select" data-f="rating" aria-label="My rating">
+            <option value="">My rating</option>
+            ${[5,4,3,2,1].map(n=>`<option value="${n}" ${String(x.rating)===String(n)?"selected":""}>${"★".repeat(n)}</option>`).join("")}
+          </select>
+        </div>
+        <textarea data-f="notes" placeholder="My notes">${esc(x.notes||"")}</textarea>
+        <div class="row" style="margin-top:8px">
+          <button class="btn" data-act="open">${x.source==="classic"?"▶ Watch":"Details"}</button>
+          <button class="btn danger" data-act="remove">Remove</button>
+        </div>
+      </div>
+    </div>`).join("");
+}
+$("#listFilter").addEventListener("change", renderList);
+$("#listSort").addEventListener("change", renderList);
+$("#listWrap").addEventListener("change", e=>{
+  const row=e.target.closest(".list-item"); const fld=e.target.dataset.f; if(!row||!fld) return;
+  const it=myList.find(x=>x.key===row.dataset.key); if(!it) return;
+  it[fld]=e.target.value; saveList();
+  if(fld!=="notes"){ toast("Saved"); if($("#listFilter").value) renderList(); } else toast("Notes saved");
+});
+$("#listWrap").addEventListener("click", e=>{
+  const b=e.target.closest("[data-act]"); if(!b) return;
+  const it=myList.find(x=>x.key===b.closest(".list-item").dataset.key); if(!it) return;
+  if(b.dataset.act==="remove"){ if(confirm(`Remove "${it.title}" from My List?`)){ myList=myList.filter(x=>x!==it); saveList(); renderList(); } }
+  else if(it.source==="classic") openClassic(it.classicId);
+  else openMovie(it.tmdbId);
+});
+
+/* ---------- Settings ---------- */
+function loadSettingsForm(){ $("#tmdbKey").value=settings.key||""; $("#region").value=settings.region||"US"; $("#adult").value=settings.adult||"false"; }
+$("#saveKey").addEventListener("click", ()=>{ settings.key=$("#tmdbKey").value.trim(); store.set("mm_settings",settings); toast(settings.key?"Key saved":"Key removed"); loadDiscover(); });
+$("#showKey").addEventListener("click", function(){ const i=$("#tmdbKey"); i.type=i.type==="password"?"text":"password"; this.textContent=i.type==="password"?"Show":"Hide"; });
+$("#testKey").addEventListener("click", async ()=>{
+  try{ await tmdb("configuration", {}, $("#tmdbKey").value.trim()); toast("Key works ✓"); }catch(e){ toast(errMsg(e)); }
+});
+
+/* ---------- Owner-only Settings ---------- */
+function isOwner(){ return store.get("mm_owner_on", false) === true; }
+function applyOwner(){
+  $("#settingsTab").hidden = !isOwner();
+  if(!isOwner() && $("#settings").classList.contains("active")) showTab("discover");
+}
+async function sha(s){
+  try{ if(window.crypto && crypto.subtle){ const b=await crypto.subtle.digest("SHA-256", new TextEncoder().encode(s)); return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,"0")).join(""); } }catch(e){}
+  let h=0; for(const c of s){ h=(h*31+c.charCodeAt(0))|0; } return "x"+h;
+}
+async function checkPin(pin){
+  if(WORKER_URL){
+    try{
+      const r=await fetch(workerBase()+"/owner-check",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({pin})});
+      const d=await r.json(); return d && d.ok===true;
+    }catch(e){ return false; }
+  }
+  const local=store.get("mm_pinhash","");
+  return !!local && local===await sha("moviebox:"+pin);
+}
+function ownerPrompt(mode){
+  if(mode==="change" && WORKER_URL){
+    openModal("Change PIN", '<p>Your PIN is kept on Cloudflare. To change it, open your Worker in Cloudflare → Settings → Variables and Secrets, and edit <b>OWNER_PIN</b>.</p>');
+    return;
+  }
+  const creating = mode==="change" || (!WORKER_URL && !store.get("mm_pinhash",""));
+  openModal(creating ? "Create owner PIN" : "Owner PIN", `
+    <form id="pinForm">
+      <div class="field"><label for="pin1">${creating?"New PIN (4 to 8 numbers)":"Enter your PIN"}</label>
+        <input id="pin1" class="input" type="password" inputmode="numeric" maxlength="8" autocomplete="off"></div>
+      ${creating?'<div class="field"><label for="pin2">Enter it again</label><input id="pin2" class="input" type="password" inputmode="numeric" maxlength="8" autocomplete="off"></div>':""}
+      <p id="pinMsg" class="sub"></p>
+      <button class="btn primary" type="submit">${creating?"Save PIN":"Unlock"}</button>
+    </form>`);
+  setTimeout(()=>{ const p=$("#pin1"); if(p) p.focus(); },50);
+  $("#pinForm").addEventListener("submit", async e=>{
+    e.preventDefault();
+    const p1=$("#pin1").value.trim(), msg=$("#pinMsg");
+    if(!/^\d{4,8}$/.test(p1)){ msg.textContent="Use 4 to 8 numbers."; return; }
+    if(creating){
+      if(p1!==$("#pin2").value.trim()){ msg.textContent="The two PINs don't match."; return; }
+      store.set("mm_pinhash", await sha("moviebox:"+p1));
+      store.set("mm_owner_on", true); applyOwner(); closeModal(); showTab("settings"); toast("PIN saved");
+      return;
+    }
+    msg.textContent="Checking…";
+    if(await checkPin(p1)){ store.set("mm_owner_on", true); applyOwner(); closeModal(); showTab("settings"); toast("Settings unlocked"); }
+    else { msg.textContent="Wrong PIN."; $("#pin1").value=""; }
+  });
+}
+let taps=0, tapTimer=null;
+$("#logo").addEventListener("click", ()=>{
+  taps++; clearTimeout(tapTimer); tapTimer=setTimeout(()=>{ taps=0; },2500);
+  if(taps>=5){ taps=0; if(isOwner()) showTab("settings"); else ownerPrompt("unlock"); }
+});
+$("#lockOwner").addEventListener("click", ()=>{ store.set("mm_owner_on", false); applyOwner(); loadDiscover(); toast("Settings hidden on this device"); });
+$("#changePin").addEventListener("click", ()=>ownerPrompt("change"));
+
+/* ---------- Cloudflare Worker code (shown in Settings) ---------- */
+const WORKER_CODE = [
+'// Movie Box helper - Cloudflare Worker',
+'// Add two secrets in Cloudflare: TMDB_TOKEN (your TMDB API Read Access Token) and OWNER_PIN',
+'const SITE = "https://aperaamotufuelevi-glitch.github.io";',
+'const ALLOWED = /^(configuration|search\\/movie|trending\\/movie\\/week|movie\\/(popular|top_rated|now_playing|upcoming)|movie\\/\\d+)$/;',
+'',
+'export default {',
+'  async fetch(request, env) {',
+'    const cors = { "Access-Control-Allow-Origin": SITE, "Access-Control-Allow-Methods": "GET, POST, OPTIONS", "Access-Control-Allow-Headers": "Content-Type", "Vary": "Origin" };',
+'    if (request.method === "OPTIONS") return new Response(null, { headers: cors });',
+'    const url = new URL(request.url);',
+'    const path = url.pathname.replace(/^\\/+|\\/+$/g, "");',
+'',
+'    if (path === "owner-check" && request.method === "POST") {',
+'      let pin = "";',
+'      try { pin = String((await request.json()).pin || ""); } catch (e) {}',
+'      await new Promise(r => setTimeout(r, 800));',
+'      const ok = !!env.OWNER_PIN && pin === String(env.OWNER_PIN);',
+'      return Response.json({ ok }, { headers: cors });',
+'    }',
+'',
+'    if (request.method !== "GET" || !ALLOWED.test(path)) return new Response("Not allowed", { status: 403, headers: cors });',
+'    const target = new URL("https://api.themoviedb.org/3/" + path);',
+'    url.searchParams.forEach((v, k) => { if (k !== "api_key") target.searchParams.set(k, v); });',
+'    const r = await fetch(target, { headers: { Authorization: "Bearer " + env.TMDB_TOKEN, accept: "application/json" }, cf: { cacheTtl: 600, cacheEverything: true } });',
+'    return new Response(r.body, { status: r.status, headers: { ...cors, "Content-Type": "application/json", "Cache-Control": "public, max-age=600" } });',
+'  }',
+'};'
+].join("\n");
+$("#workerCode").value = WORKER_CODE;
+$("#workerStatus").innerHTML = WORKER_URL
+  ? "<b>Connected.</b> Friends and family can search movies."
+  : "<b>Not set up yet.</b> Until it is, only you can search movies, using your key on this device.";
+$("#copyWorker").addEventListener("click", async ()=>{
+  try{ await navigator.clipboard.writeText(WORKER_CODE); toast("Worker code copied"); }
+  catch(e){ const t=$("#workerCode"); t.focus(); t.select(); toast("Selected. Tap Copy."); }
+});
+$("#savePrefs").addEventListener("click", ()=>{ settings.region=$("#region").value; settings.adult=$("#adult").value; store.set("mm_settings",settings); toast("Preferences saved"); });
+$("#exportBtn").addEventListener("click", ()=>{
+  const blob=new Blob([JSON.stringify({app:"My Movies",version:1,list:myList},null,2)],{type:"application/json"});
+  const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="my-movies-backup.json"; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+});
+$("#importFile").addEventListener("change", e=>{
+  const f=e.target.files[0]; if(!f) return;
+  const r=new FileReader();
+  r.onload=()=>{ try{
+      const d=JSON.parse(r.result); const arr=Array.isArray(d)?d:d.list;
+      if(!Array.isArray(arr)) throw 0;
+      const clean=arr.filter(x=>x&&typeof x.key==="string"&&typeof x.title==="string").map(x=>({
+        key:x.key, title:x.title, year:String(x.year||""), poster:/^https:\/\/image\.tmdb\.org\//.test(x.poster||"")?x.poster:"",
+        source:x.source==="classic"?"classic":"tmdb", tmdbId:x.tmdbId, classicId:x.classicId,
+        status:STATUS[x.status]?x.status:"want", rating:/^[1-5]$/.test(String(x.rating))?String(x.rating):"", notes:String(x.notes||""), added:+x.added||Date.now()}));
+      const keys=new Set(myList.map(x=>x.key)); clean.forEach(x=>{ if(!keys.has(x.key)) myList.push(x); });
+      saveList(); toast(`Restored ${clean.length} movies`); renderList();
+    }catch(err){ toast("That file isn't a My Movies backup"); }
+    e.target.value="";
+  };
+  r.readAsText(f);
+});
+$("#clearList").addEventListener("click", ()=>{ if(confirm("Delete everything in My List? This can't be undone.")){ myList=[]; saveList(); renderList(); toast("List cleared"); } });
+
+/* ---------- Start ---------- */
+applyOwner(); loadSettingsForm(); renderClassics(); loadDiscover();
+})();
+</script>
+</body>
+</html>
